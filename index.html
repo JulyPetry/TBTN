@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take Back The Night — Wir erobern uns die Nacht zurück</title>
+<meta name="description" content="Take Back The Night: Eine feministische Protestaktion gegen sexualisierte Gewalt — Information, Geschichte und eine AR-Maske zum Mitnehmen.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Caveat:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="site-nav">
+  <a href="#top" class="nav-mark">Take Back<br>The Night</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-links" id="navLinks">
+    <a href="#geschichte" data-num="01">Geschichte</a>
+    <a href="#walpurgis" data-num="02">Walpurgisnacht</a>
+    <a href="#stimmen" data-num="03">Stimmen</a>
+    <a href="#galerie" data-num="04">Galerie</a>
+    <a href="#maske" data-num="05">Die Maske</a>
+    <a href="#mitmachen" data-num="06">Mitmachen</a>
+  </nav>
+</header>
+
+<main id="top">
+<!-- ============================================================
+     DURCHGEHENDES KACHELRASTER
+     4 Spalten · jede Kachel = Bild / Farbe / Text
+     Hover schiebt die Kachel weg und legt eine zweite Ebene frei.
+     ============================================================ -->
+<div class="tilegrid">
+
+  <!-- ROW 1 — opening labels -->
+  <div class="tile" data-type="text">
+    <div class="tile-front"><p class="t-eyebrow">Walpurgisnacht<br>seit 1977</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><span class="t-num">(01)</span></div>
+    <div class="tile-back"><p class="t-back-label">Geschichte</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W1.png" alt="Plakatraster GEMEINSAM mit Fackelträgerin und Walpurgisnacht-Schriftzug" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Plakatraster<br>1977 — heute</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Eine Protest-<br>aktion gegen<br>sexualisierte<br>Gewalt</p></div>
+  </div>
+
+  <!-- ROW 2 — HERO TITLE part 1 -->
+  <div class="tile tile-title" data-type="title">
+    <div class="tile-front"><span>Take</span></div>
+  </div>
+  <div class="tile tile-title" data-type="title">
+    <div class="tile-front"><span>Back</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">„Frauen, wir<br>erobern uns<br>die Nacht<br>zurück.“</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W6.png" alt="Silhouetten von Demonstrantinnen mit Fackeln auf rotem Grund" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Fackelzug,<br>von oben</p></div>
+  </div>
+
+  <!-- ROW 3 — HERO TITLE part 2 -->
+  <div class="tile tile-title" data-type="title">
+    <div class="tile-front"><span>The</span></div>
+  </div>
+  <div class="tile tile-title" data-type="title">
+    <div class="tile-front"><span>Night</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><p class="t-quote-mini">Take it<br>back.</p></div>
+    <div class="tile-back"><p class="t-back-label">Scrollen, um<br>der Geschichte<br>zu folgen ↓</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><a href="#maske" class="t-back-link">Maske in AR<br>ansehen →</a></div>
+  </div>
+
+  <!-- ROW 4 — Geschichte intro -->
+  <div class="tile tile-text-wide" data-type="text" id="geschichte">
+    <div class="tile-front">
+      <p class="t-lead">Selbstbestimmung. Sexualität. Gewalt. Struktureller Ausschluss aus fast allen wichtigen gesellschaftlichen Zusammenhängen.</p>
+    </div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W3.png" alt="Schwarz-weiße Collage mit Fackelträgerinnen, Sternsymbolen und einem schreienden Gesicht — Symbolik der Protestbewegung" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Archiv &amp;<br>Straße</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Jung, links,<br>ungeduldig</p></div>
+  </div>
+
+  <!-- ROW 5 -->
+  <div class="tile" data-type="text">
+    <div class="tile-front"><p class="t-body">Das trieb in den 1970er-Jahren eine neue Generation von Frauen auf die Straße — ungeduldig mit den spießig-restaurativen Nachkriegsjahrzehnten.</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Infostände,<br>Straßentheater,<br>Protest gegen<br>Miss-Wahlen</p></div>
+  </div>
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">In den gemeinsam geplanten Aktionen entdeckten die Frauen etwas, das größer war als jede einzelne Forderung: weibliche Solidarität.</p>
+    </div>
+  </div>
+
+  <!-- ROW 6 — quote -->
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Ehe, Kinder-<br>erziehung,<br>Haushalt</p></div>
+  </div>
+  <div class="tile tile-quote-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-quote">„Diese ständigen Kämpfe — speziell in meiner Ehe, um Kindererziehung, um Beteiligung am Haushalt — das hat mir einfach gestunken. Und dann habe ich mich wohlgefühlt in einer Gruppe von Frauen, die das auch so gesehen haben.“</p>
+    </div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Kein Einzel-<br>schicksal</p></div>
+  </div>
+
+  <!-- ROW 7 -->
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">Unterdrückung ist kein Einzelschicksal. Die Einzelne stößt immer wieder an Grenzen, solange sich die gesellschaftlichen Strukturen nicht verändern.</p>
+    </div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W7.png" alt="Schwarzweißes Plakatraster GEMEINSAM mit Gesichtssilhouette" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">GEMEINSAM,<br>wiederholt</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><span class="t-num-mini">02</span></div>
+    <div class="tile-back"><p class="t-back-label">Walpurgis-<br>nacht</p></div>
+  </div>
+
+  <!-- ROW 8 — Walpurgisnacht title -->
+  <div class="tile tile-title-mid" data-type="title" id="walpurgis">
+    <div class="tile-front"><span>Die Nacht</span></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>der Hexen</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Blocksberg,<br>Mittelalter</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W2.png" alt="Handschriftliche rote Collage mit dem Schriftzug Reclaim the Night" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Reclaim<br>the Night</p></div>
+  </div>
+
+  <!-- ROW 9 -->
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">In der Walpurgisnacht — der Nacht der Hexen auf dem Blocksberg — ziehen seit 1977 tausende Frauen gegen Vergewaltigung und sexuelle Belästigung durch die Straßen. Mit Fackeln, Kerzen und weiß bemalten Gesichtern.</p>
+    </div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Als Hexen<br>verbrannt</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><p class="t-quote-mini">„Take back<br>the night“</p></div>
+    <div class="tile-back"><p class="t-back-label">Ursprung:<br>USA</p></div>
+  </div>
+
+  <!-- ROW 10 -->
+  <div class="tile" data-type="text">
+    <div class="tile-front"><p class="t-body">Schon im Aberglauben des Mittelalters konnte diese Nacht für Frauen, die allein das Haus verließen, zum Verhängnis werden. 1977 landete niemand mehr auf dem Scheiterhaufen — aber ein nächtlicher Ausflug „allein“ galt immer noch als riskant. Bis heute.</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W4.png" alt="Porträt einer Person mit erschöpftem, kämpferischem Gesichtsausdruck in Rot, Schwarz und Hauttönen" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Gesicht &amp;<br>Wut</p></div>
+  </div>
+  <div class="tile" data-type="text">
+    <div class="tile-front"><p class="t-body">In Frankfurt setzten sich Frauen handfest zur Wehr: Pöbelnde Männer wurden kurzerhand in die Flucht geschlagen.</p></div>
+  </div>
+
+  <!-- ROW 11 — banner lines as tiles -->
+  <div class="tile tile-banner" data-type="color" data-color="black">
+    <div class="tile-front"><p class="t-banner">Wenn Frauen<br>Nein sagen,<br>dann meinen<br>sie auch Nein.</p></div>
+  </div>
+  <div class="tile tile-banner" data-type="color" data-color="paper-dark">
+    <div class="tile-front"><p class="t-banner t-banner-dark">Ausgangssperre<br>bei Dunkelheit<br>ist das Los der<br>Weiblichkeit.</p></div>
+  </div>
+  <div class="tile tile-banner" data-type="color" data-color="red">
+    <div class="tile-front"><p class="t-banner">Frauen, wir<br>erobern uns<br>die Nacht<br>zurück.</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W6.png" alt="Silhouetten von Demonstrantinnen mit Fackeln auf rotem Grund" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Rasseln,<br>Wecker,<br>Trommeln</p></div>
+  </div>
+
+  <!-- ROW 12 — Stimmen title -->
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"><span class="t-num-mini">03</span></div>
+    <div class="tile-back"><p class="t-back-label">Rufe von<br>der Straße</p></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title" id="stimmen">
+    <div class="tile-front"><span>Rufe von</span></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>der Straße</span></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W5.png" alt="Nahaufnahme eines schreienden Gesichts in Rot und Schwarz" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Schrei,<br>Nahaufnahme</p></div>
+  </div>
+
+  <!-- ROW 13 — chants -->
+  <div class="tile tile-chant" data-type="color" data-color="black">
+    <div class="tile-front"><p class="t-chant">„Wir sind Frauen,<br>wir sind viele,<br>wir haben die<br>Schnauze voll.“</p></div>
+  </div>
+  <div class="tile tile-chant" data-type="color" data-color="red">
+    <div class="tile-front"><p class="t-chant">„Frauen, hört<br>ihr Frauen<br>schrein, lasst<br>sie nicht allein.“</p></div>
+  </div>
+  <div class="tile tile-chant" data-type="color" data-color="black">
+    <div class="tile-front"><p class="t-chant">„Frauen<br>gemeinsam<br>sind stark.“</p></div>
+  </div>
+  <div class="tile tile-chant" data-type="color" data-color="red">
+    <div class="tile-front"><p class="t-chant">„Wir erobern<br>uns die Nacht<br>zurück.“</p></div>
+  </div>
+
+  <!-- ROW 14 — Stimmen text -->
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">Frauen tanzten und sangen voll Wut und Leidenschaft auf der Straße. Schwarz gekleidet, mit weiß geschminkten Gesichtern, zogen sie gegen Gewalt und Unterdrückung durch die nächtliche Stadt.</p>
+    </div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Eng<br>umschlungen</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W4.png" alt="Porträt eines Gesichts in Rot-Schwarz-Beige" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">Erste Stimme,<br>erstes Mal</p></div>
+  </div>
+
+  <!-- ROW 15 -->
+  <div class="tile" data-type="text">
+    <div class="tile-front"><p class="t-body">Eng umschlungen mit der besten Freundin oder der Geliebten trotzten sie der weit verbreiteten Homophobie der Straße.</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Patriarchats-<br>kritikerin der<br>ersten Stunde</p></div>
+  </div>
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">Der gemeinsame Auftritt war kein Zufall, sondern Strategie: laut sein, sichtbar sein, nicht mehr allein sein.</p>
+    </div>
+  </div>
+
+  <!-- ROW 16 — Galerie title -->
+  <div class="tile tile-title-mid" data-type="title" id="galerie">
+    <div class="tile-front"><span>Visuelle</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><span class="t-num-mini">04</span></div>
+    <div class="tile-back"><p class="t-back-label">Galerie</p></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>Spuren</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Sieben<br>Bildfragmente</p></div>
+  </div>
+
+  <!-- ROW 17-18 — gallery images, each a tile of its own -->
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W1.png" alt="Plakatraster GEMEINSAM mit Fackelträgerin" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">01 — Plakat-<br>raster</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W2.png" alt="Handschriftliche rote Collage Reclaim the Night" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">02 — Hand-<br>schrift</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W3.png" alt="Schreiender Mund und historisches Foto" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">03 — Archiv</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W4.png" alt="Porträt in Rot-Schwarz-Beige" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">04 — Porträt</p></div>
+  </div>
+
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W5.png" alt="Nahaufnahme eines schreienden Gesichts" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">05 — Schrei</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W6.png" alt="Silhouetten von Demonstrantinnen mit Fackeln" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">06 — Fackel-<br>zug</p></div>
+  </div>
+  <div class="tile tile-img" data-type="image">
+    <div class="tile-front"><img src="assets/W7.png" alt="Schwarzweißes Plakatraster GEMEINSAM" loading="lazy"></div>
+    <div class="tile-back"><p class="t-back-label">07 — Wieder-<br>holung</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Zum<br>Vergrößern<br>anklicken</p></div>
+  </div>
+
+  <!-- ROW 19 — Maske title -->
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"><span class="t-num-mini">05</span></div>
+    <div class="tile-back"><p class="t-back-label">Die Maske</p></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title" id="maske">
+    <div class="tile-front"><span>Die Maske</span></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>mitnehmen</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Anonymität<br>als Schutz</p></div>
+  </div>
+
+  <!-- ROW 20 — mask intro text -->
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">Weiß geschminkte Gesichter waren das stille Erkennungszeichen der Walpurgisnacht-Demonstrantinnen. Betrachte die Maske in 3D, platziere sie per AR in deinem Raum.</p>
+    </div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Maskierung<br>als Statement</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Halte den<br>Moment im<br>Foto fest</p></div>
+  </div>
+
+</div><!-- /tilegrid -->
+
+<!-- ============================================================
+     AR VIEWER — drei Masken, jede mit eigenem Viewer, AR-Button
+     und Foto-Funktion. Bleiben außerhalb des Kachelrasters, da
+     model-viewer nicht sinnvoll in eine Hover-Kachel passt.
+     ============================================================ -->
+<section class="mask-section">
+  <div class="mask-section-head">
+    <span class="t-num-mini">Maske 01</span>
+    <h3>Die erste Maske</h3>
+    <p>Weiß geschminkte Gesichter als stilles Erkennungszeichen der Walpurgisnacht-Demonstrantinnen.</p>
+  </div>
+  <div class="mask-viewer-frame">
+    <model-viewer
+      id="maskViewer1"
+      class="mask-model-viewer"
+      src="assets/Mask1.glb"
+      ios-src="assets/Mask1.usdz"
+      alt="3D-Modell der ersten Protest-Maske"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="1"
+      exposure="0.95"
+      environment-image="neutral"
+      auto-rotate
+      rotation-per-second="18deg"
+      interaction-prompt="none"
+      poster="assets/W5.png"
+    >
+      <button slot="ar-button" class="ar-button" data-ar-button="1">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 12v9M3 7l9 5 9-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>In meinem Raum platzieren</span>
+      </button>
+      <div class="mv-progress-bar" slot="progress-bar">
+        <div class="mv-progress-fill"></div>
+      </div>
+    </model-viewer>
+    <div class="mask-hint" data-ar-hint="1">
+      Drehen, zoomen, kippen — direkt im Bild. Auf dem Smartphone öffnet der AR-Button die Kamera.
+    </div>
+  </div>
+
+  <div class="capture-bar" data-capture-bar="1" hidden>
+    <button class="btn btn-line capture-btn" data-capture-btn="1">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.5-2h7L17 8h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="14" r="3.2" stroke="currentColor" stroke-width="1.4"/></svg>
+      Foto aufnehmen
+    </button>
+    <p class="capture-note" data-capture-note="1"></p>
+  </div>
+
+  <div class="photo-overlay" data-photo-overlay="1" hidden>
+    <div class="photo-card">
+      <img data-photo-result="1" alt="Aufgenommenes Foto der platzierten Maske">
+      <div class="photo-actions">
+        <a class="btn btn-line" data-download-photo="1" download="take-back-the-night-maske-01.png">Foto herunterladen</a>
+        <button class="btn btn-line" data-close-photo="1">Schließen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mask-section">
+  <div class="mask-section-head">
+    <span class="t-num-mini">Maske 02</span>
+    <h3>Die zweite Maske</h3>
+    <p>Eine Variation — Anonymität als Schutz, Maskierung als Statement.</p>
+  </div>
+  <div class="mask-viewer-frame">
+    <model-viewer
+      id="maskViewer2"
+      class="mask-model-viewer"
+      src="assets/Mask2.glb"
+      ios-src="assets/Mask2.usdz"
+      alt="3D-Modell der zweiten Protest-Maske"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="1"
+      exposure="0.95"
+      environment-image="neutral"
+      auto-rotate
+      rotation-per-second="18deg"
+      interaction-prompt="none"
+      poster="assets/W5.png"
+    >
+      <button slot="ar-button" class="ar-button" data-ar-button="2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 12v9M3 7l9 5 9-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>In meinem Raum platzieren</span>
+      </button>
+      <div class="mv-progress-bar" slot="progress-bar">
+        <div class="mv-progress-fill"></div>
+      </div>
+    </model-viewer>
+    <div class="mask-hint" data-ar-hint="2">
+      Drehen, zoomen, kippen — direkt im Bild. Auf dem Smartphone öffnet der AR-Button die Kamera.
+    </div>
+  </div>
+
+  <div class="capture-bar" data-capture-bar="2" hidden>
+    <button class="btn btn-line capture-btn" data-capture-btn="2">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.5-2h7L17 8h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="14" r="3.2" stroke="currentColor" stroke-width="1.4"/></svg>
+      Foto aufnehmen
+    </button>
+    <p class="capture-note" data-capture-note="2"></p>
+  </div>
+
+  <div class="photo-overlay" data-photo-overlay="2" hidden>
+    <div class="photo-card">
+      <img data-photo-result="2" alt="Aufgenommenes Foto der platzierten Maske">
+      <div class="photo-actions">
+        <a class="btn btn-line" data-download-photo="2" download="take-back-the-night-maske-02.png">Foto herunterladen</a>
+        <button class="btn btn-line" data-close-photo="2">Schließen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mask-section">
+  <div class="mask-section-head">
+    <span class="t-num-mini">Maske 03</span>
+    <h3>Die dritte Maske</h3>
+    <p>Jede Maske ein eigenes Gesicht — gemeinsam ein stiller Chor.</p>
+  </div>
+  <div class="mask-viewer-frame">
+    <model-viewer
+      id="maskViewer3"
+      class="mask-model-viewer"
+      src="assets/Mask3.glb"
+      ios-src="assets/Mask3.usdz"
+      alt="3D-Modell der dritten Protest-Maske"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="1"
+      exposure="0.95"
+      environment-image="neutral"
+      auto-rotate
+      rotation-per-second="18deg"
+      interaction-prompt="none"
+      poster="assets/W5.png"
+    >
+      <button slot="ar-button" class="ar-button" data-ar-button="3">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 12v9M3 7l9 5 9-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>In meinem Raum platzieren</span>
+      </button>
+      <div class="mv-progress-bar" slot="progress-bar">
+        <div class="mv-progress-fill"></div>
+      </div>
+    </model-viewer>
+    <div class="mask-hint" data-ar-hint="3">
+      Drehen, zoomen, kippen — direkt im Bild. Auf dem Smartphone öffnet der AR-Button die Kamera.
+    </div>
+  </div>
+
+  <div class="capture-bar" data-capture-bar="3" hidden>
+    <button class="btn btn-line capture-btn" data-capture-btn="3">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.5-2h7L17 8h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="14" r="3.2" stroke="currentColor" stroke-width="1.4"/></svg>
+      Foto aufnehmen
+    </button>
+    <p class="capture-note" data-capture-note="3"></p>
+  </div>
+
+  <div class="photo-overlay" data-photo-overlay="3" hidden>
+    <div class="photo-card">
+      <img data-photo-result="3" alt="Aufgenommenes Foto der platzierten Maske">
+      <div class="photo-actions">
+        <a class="btn btn-line" data-download-photo="3" download="take-back-the-night-maske-03.png">Foto herunterladen</a>
+        <button class="btn btn-line" data-close-photo="3">Schließen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     OUTRO — letzte Kachelreihe
+     ============================================================ -->
+<div class="tilegrid" id="mitmachen">
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"><span class="t-num-mini">06</span></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>Die Nacht</span></div>
+  </div>
+  <div class="tile tile-title-mid" data-type="title">
+    <div class="tile-front"><span>gehört uns auch.</span></div>
+  </div>
+  <div class="tile" data-type="color" data-color="red">
+    <div class="tile-front"></div>
+    <div class="tile-back"><a href="#top" class="t-back-link">Nach oben ↑</a></div>
+  </div>
+
+  <div class="tile tile-text-wide" data-type="text">
+    <div class="tile-front">
+      <p class="t-body">Take Back The Night ist keine Erinnerung an etwas Vergangenes — die Forderung steht weiterhin. Sprich darüber. Geh hin, wenn in deiner Stadt demonstriert wird.</p>
+    </div>
+  </div>
+  <div class="tile" data-type="color" data-color="paper-dark">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Trag die<br>Maske weiter</p></div>
+  </div>
+  <div class="tile" data-type="color" data-color="black">
+    <div class="tile-front"></div>
+    <div class="tile-back"><p class="t-back-label">Trag die<br>Fackel weiter</p></div>
+  </div>
+</div>
+
+</main>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Schließen">✕</button>
+  <figure class="lightbox-figure">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+</div>
+
+<footer class="site-footer">
+  <p>Eine Website von July Petry — <a href="mailto:julyemelypetry@gmail.com">julyemelypetry@gmail.com</a></p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

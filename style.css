@@ -1,0 +1,376 @@
+/* ============================================================
+   TAKE BACK THE NIGHT — Kachelraster-System v2
+   Minimalistisch, durchgehendes Modulraster, skaliert mit dem
+   Viewport (keine Stagnation auf großen Screens).
+   ============================================================ */
+:root {
+  --red:       #C8102E;
+  --red-deep:  #8C0A1F;
+  --black:     #0E0D0C;
+  --paper:     #FBFBF9;   /* kühles, fast reines Weiß statt Beige */
+  --paper-2:   #F1F1EE;   /* minimal abgesetzter Grauweiß-Ton */
+  --line:      rgba(14,13,12,.12);
+  --line-on-dark: rgba(251,251,249,.14);
+
+  --font-display: 'Fraunces', 'Times New Roman', serif;
+  --font-body:    'Space Grotesk', sans-serif;
+  --font-hand:    'Caveat', cursive;
+
+  --gutter: clamp(20px, 3vw, 48px);
+  /* tile height now scales with viewport width, not just clamped low */
+  --tile-h: clamp(150px, 13vw, 280px);
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+
+::selection { background: var(--red); color: var(--paper); }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* ============================================================
+   GRAIN + CURSOR
+   ============================================================ */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 999;
+  opacity: .03; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.cursor-dot { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .cursor-dot {
+    display: block; position: fixed; top: 0; left: 0;
+    width: 6px; height: 6px; background: var(--red); border-radius: 50%;
+    pointer-events: none; z-index: 998;
+    transform: translate(-50%, -50%); transition: transform .15s var(--ease);
+    mix-blend-mode: difference;
+  }
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 22px var(--gutter);
+  mix-blend-mode: difference;
+}
+.nav-mark {
+  font-family: var(--font-body); font-weight: 500; font-size: 12px;
+  line-height: 1.3; letter-spacing: 0.03em; color: var(--paper);
+  text-transform: uppercase;
+}
+.nav-toggle { display: flex; flex-direction: column; gap: 5px; padding: 10px; z-index: 310; }
+.nav-toggle span { width: 20px; height: 1px; background: var(--paper); transition: transform .3s var(--ease), opacity .3s var(--ease); }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-links {
+  position: fixed; inset: 0; background: var(--black);
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  padding: 0 var(--gutter); transform: translateY(-100%); transition: transform .5s var(--ease);
+  z-index: 250; mix-blend-mode: normal;
+}
+.nav-links.open { transform: translateY(0); }
+.nav-links a {
+  font-family: var(--font-display); font-style: italic; font-weight: 400;
+  font-size: clamp(30px, 6.5vw, 58px); color: var(--paper);
+  padding: 5px 0; border-bottom: 1px solid transparent;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.nav-links a::before {
+  content: attr(data-num); font-family: var(--font-body); font-style: normal;
+  font-size: 11px; color: var(--red); margin-right: 16px; vertical-align: super;
+}
+.nav-links a:hover { color: var(--red); border-color: var(--red); }
+
+/* ============================================================
+   TILEGRID — the core system
+   ============================================================ */
+main { display: block; }
+
+.tilegrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: var(--tile-h);
+  gap: 1px;
+  background: var(--black);
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.tile {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+}
+
+.tile-front,
+.tile-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 1.6vw, 26px);
+  text-align: center;
+}
+
+.tile-front {
+  background: var(--paper);
+  z-index: 2;
+  transition: transform .5s var(--ease), opacity .35s var(--ease);
+}
+
+.tile-back {
+  background: var(--paper-2);
+  z-index: 1;
+}
+
+/* hover: front slides up + fades, revealing back.
+   pointer-events:none is the key fix — without it, the
+   (invisible but still present) front layer keeps intercepting
+   clicks meant for links/buttons in the back layer. */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tile-front {
+    transform: translateY(-12%);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+.tile.is-open .tile-front {
+  transform: translateY(-12%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- color tiles ---- */
+.tile[data-color="red"]        { background: var(--red); }
+.tile[data-color="red"] .tile-front { background: var(--red); }
+.tile[data-color="black"]      { background: var(--black); }
+.tile[data-color="black"] .tile-front { background: var(--black); }
+.tile[data-color="paper-dark"] { background: var(--paper-2); }
+.tile[data-color="paper-dark"] .tile-front { background: var(--paper-2); }
+
+.tile[data-color="red"] .tile-back,
+.tile[data-color="black"] .tile-back {
+  background: var(--paper);
+}
+
+/* ---- image tiles ---- */
+.tile-img .tile-front { padding: 0; }
+.tile-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(0.1);
+  cursor: zoom-in;
+}
+
+/* ---- title tiles (large display type, modern/experimental, not bold) ---- */
+.tile-title .tile-front,
+.tile-title-mid .tile-front {
+  background: var(--paper);
+}
+.tile-title span,
+.tile-title-mid span {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 360;
+  font-optical-sizing: auto;
+  color: var(--black);
+  line-height: 0.92;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.tile-title span { font-size: clamp(34px, 5.4vw, 92px); }
+.tile-title-mid span { font-size: clamp(26px, 3.9vw, 64px); }
+
+/* ---- text labels inside tiles ---- */
+.t-eyebrow {
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--red-deep); line-height: 1.5; margin: 0;
+}
+.t-num {
+  font-family: var(--font-body); font-size: 13px; color: var(--black);
+  letter-spacing: 0.04em;
+}
+.t-num-mini {
+  font-family: var(--font-body); font-size: 12px; color: var(--paper);
+  letter-spacing: 0.06em;
+}
+.tile[data-color="red"] .t-num-mini,
+.tile[data-color="red"] .t-num { color: var(--black); }
+
+.t-lead {
+  font-size: clamp(15px, 1.1vw, 19px); font-weight: 500; line-height: 1.45;
+  margin: 0; text-align: left;
+}
+.t-body {
+  font-size: clamp(13.5px, 0.95vw, 16px); line-height: 1.55;
+  margin: 0; text-align: left; color: rgba(14,13,12,.8);
+}
+.t-quote {
+  font-family: var(--font-display); font-style: italic; font-weight: 380;
+  font-size: clamp(18px, 1.5vw, 25px);
+  line-height: 1.35; color: var(--red-deep); margin: 0; text-align: left;
+}
+.t-quote-mini {
+  font-family: var(--font-display); font-style: italic; font-weight: 380;
+  font-size: clamp(17px, 1.4vw, 23px); color: var(--black); margin: 0; line-height: 1.25;
+}
+.t-banner {
+  font-family: var(--font-display); font-style: italic; font-weight: 380;
+  font-size: clamp(16px, 1.3vw, 21px); line-height: 1.25; color: var(--paper); margin: 0;
+}
+.t-banner-dark { color: var(--black); }
+.t-chant {
+  font-family: var(--font-display); font-style: italic; font-weight: 380;
+  font-size: clamp(16px, 1.3vw, 21px); line-height: 1.25; color: var(--paper); margin: 0;
+}
+
+.t-back-label {
+  font-size: clamp(11.5px, 0.85vw, 14px); letter-spacing: 0.02em;
+  color: var(--red-deep); line-height: 1.4; margin: 0;
+}
+.t-back-link {
+  font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--red-deep); border-bottom: 1px solid var(--red-deep);
+  padding-bottom: 4px; transition: opacity .2s var(--ease);
+  position: relative; z-index: 3;
+}
+.t-back-link:hover { opacity: .6; }
+
+/* ---- spanning tiles ---- */
+.tile-text-wide { grid-column: span 2; }
+.tile-quote-wide { grid-column: span 2; }
+
+/* ============================================================
+   MASK / AR SECTIONS — stay outside the tile grid
+   ============================================================ */
+.mask-section {
+  background: var(--black);
+  padding: clamp(48px, 6vw, 90px) var(--gutter);
+  border-top: 1px solid var(--black);
+}
+.mask-section + .mask-section { border-top: 1px solid var(--line-on-dark); }
+
+.mask-section-head {
+  max-width: 680px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.mask-section-head .t-num-mini { color: var(--red); display: block; margin-bottom: 10px; }
+.mask-section-head h3 {
+  font-family: var(--font-display); font-style: italic; font-weight: 380;
+  font-size: clamp(24px, 3vw, 36px); color: var(--paper); margin: 0 0 10px;
+}
+.mask-section-head p {
+  font-size: 14px; color: rgba(251,251,249,.65); margin: 0; max-width: 540px; margin-inline: auto;
+}
+
+.mask-viewer-frame { max-width: 680px; margin: 0 auto; position: relative; }
+.mask-model-viewer {
+  width: 100%; height: clamp(320px, 48vh, 480px);
+  background-color: var(--black);
+  border-top: 1px solid var(--line-on-dark);
+  border-bottom: 1px solid var(--line-on-dark);
+  --poster-color: transparent;
+}
+.ar-button {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 22px; background: var(--paper); color: var(--black);
+  font-family: var(--font-body); font-weight: 500; font-size: 12px;
+  letter-spacing: 0.03em; text-transform: uppercase; transition: opacity .2s var(--ease);
+}
+.ar-button:hover { opacity: .75; }
+.ar-button:not(:focus-visible) { outline: none; }
+
+.mv-progress-bar { display: block; width: 50%; height: 1px; background: var(--line-on-dark); margin: 0 auto; position: absolute; top: 50%; left: 25%; }
+.mv-progress-fill { width: 0%; height: 100%; background: var(--red); }
+model-viewer[loaded] .mv-progress-bar { display: none; }
+
+.mask-hint { text-align: center; font-size: 12px; color: rgba(251,251,249,.45); margin-top: 16px; }
+
+.capture-bar { max-width: 680px; margin: 22px auto 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.capture-bar[hidden] { display: none; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; font-weight: 500; font-size: 13px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--paper); }
+.btn-line { border-bottom: 1px solid currentColor; padding-bottom: 6px; transition: opacity .2s var(--ease); }
+.btn-line:hover { opacity: .65; }
+.capture-note { font-size: 13px; color: rgba(251,251,249,.5); margin: 0; text-align: center; max-width: 460px; }
+
+.photo-overlay {
+  position: fixed; inset: 0; z-index: 600; background: rgba(14,13,12,.92);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.photo-overlay[hidden] { display: none; }
+.photo-card { background: var(--paper); padding: 18px; max-width: 460px; width: 100%; }
+.photo-card img { width: 100%; margin-bottom: 18px; }
+.photo-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.photo-actions .btn { color: var(--black); }
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500; background: rgba(14,13,12,.95);
+  display: flex; align-items: center; justify-content: center; padding: 40px var(--gutter);
+}
+.lightbox[hidden] { display: none; }
+.lightbox-close {
+  position: absolute; top: 28px; right: var(--gutter); font-size: 18px;
+  color: var(--paper); width: 36px; height: 36px; border: 1px solid var(--line-on-dark);
+}
+.lightbox-figure { margin: 0; max-width: 900px; max-height: 88vh; }
+.lightbox-figure img { max-height: 72vh; width: auto; margin: 0 auto; object-fit: contain; }
+.lightbox-figure figcaption { color: var(--paper); opacity: .65; font-size: 13px; margin-top: 18px; text-align: center; max-width: 600px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  background: var(--paper); color: rgba(14,13,12,.5); text-align: center;
+  font-size: 13px; padding: 26px var(--gutter) 32px; border-top: 1px solid var(--line);
+}
+.site-footer a { border-bottom: 1px solid currentColor; transition: color .2s var(--ease); }
+.site-footer a:hover { color: var(--red-deep); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 760px) {
+  :root { --tile-h: clamp(120px, 30vw, 170px); }
+  .tilegrid { grid-template-columns: repeat(2, 1fr); }
+  .tile-text-wide, .tile-quote-wide { grid-column: span 2; }
+  .tile-title span { font-size: clamp(28px, 9vw, 42px); }
+  .tile-title-mid span { font-size: clamp(22px, 7vw, 34px); }
+}
+
+@media (max-width: 460px) {
+  .t-body, .t-lead { font-size: 12.5px; }
+}
+
+@media (min-width: 1800px) {
+  :root { --tile-h: 280px; }
+}

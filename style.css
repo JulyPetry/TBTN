@@ -8,7 +8,7 @@
   --red-deep:  #860000;
   --black:     #0E0D0C;
   --paper:     #FBFBF9;   /* kühles, fast reines Weiß statt Beige */
-  --paper-2:   #F1F1EE;   /* minimal abgesetzter Grauweiß-Ton */
+  --paper-2:   #FBFBF9;   /* vereinheitlicht — identisch zu --paper, kein Tonunterschied mehr */
   --line:      rgba(14,13,12,.12);
   --line-on-dark: rgba(251,251,249,.14);
 
@@ -329,6 +329,19 @@ main { display: block; }
 model-viewer[loaded] .mv-progress-bar { display: none; }
 
 .mask-hint { text-align: center; font-size: 12px; color: rgba(251,251,249,.45); margin-top: 16px; }
+.mask-credit {
+  text-align: center;
+  font-size: 11px;
+  color: rgba(251,251,249,.35);
+  margin: 6px 0 0;
+  letter-spacing: 0.01em;
+}
+.mask-credit a {
+  color: rgba(251,251,249,.55);
+  border-bottom: 1px solid rgba(251,251,249,.25);
+  transition: color .2s var(--ease), border-color .2s var(--ease);
+}
+.mask-credit a:hover { color: var(--red); border-color: var(--red); }
 
 .capture-bar { max-width: 680px; margin: 22px auto 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .capture-bar[hidden] { display: none; }

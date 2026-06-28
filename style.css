@@ -4,8 +4,8 @@
    Viewport (keine Stagnation auf großen Screens).
    ============================================================ */
 :root {
-  --red:       #C8102E;
-  --red-deep:  #8C0A1F;
+  --red:       #D90000;
+  --red-deep:  #860000;
   --black:     #0E0D0C;
   --paper:     #FBFBF9;   /* kühles, fast reines Weiß statt Beige */
   --paper-2:   #F1F1EE;   /* minimal abgesetzter Grauweiß-Ton */
@@ -157,18 +157,21 @@ main { display: block; }
   z-index: 1;
 }
 
-/* hover: front slides up + fades, revealing back.
-   pointer-events:none is the key fix — without it, the
-   (invisible but still present) front layer keeps intercepting
-   clicks meant for links/buttons in the back layer. */
+/* hover/tap reveal only applies to EMPTY front tiles.
+   Tiles that already show content (text, quotes, banners,
+   images) must stay visible on hover — only the truly empty
+   color tiles act as "reveal on interaction" surfaces.
+   pointer-events:none is the key fix for buttons in the back
+   layer — without it, the (invisible but still present) front
+   layer keeps intercepting clicks. */
 @media (hover: hover) and (pointer: fine) {
-  .tile:hover .tile-front {
+  .tile:hover .tile-front.tile-front-empty {
     transform: translateY(-12%);
     opacity: 0;
     pointer-events: none;
   }
 }
-.tile.is-open .tile-front {
+.tile.is-open .tile-front.tile-front-empty {
   transform: translateY(-12%);
   opacity: 0;
   pointer-events: none;
@@ -206,12 +209,19 @@ main { display: block; }
   font-style: normal;
   font-weight: 400;
   color: var(--black);
-  line-height: 0.9;
-  white-space: nowrap;
+  line-height: 1.05;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
   letter-spacing: -0.005em;
+  max-width: 100%;
 }
-.tile-title span { font-size: clamp(28px, 4.4vw, 76px); }
-.tile-title-mid span { font-size: clamp(21px, 3.2vw, 52px); }
+/* sized relative to a single grid column (~1/4 of viewport on
+   desktop), not the full viewport — this is what was pushing
+   text past the tile edge before */
+.tile-title span { font-size: clamp(18px, 2.1vw, 40px); }
+.tile-title-mid span { font-size: clamp(15px, 1.6vw, 30px); }
 
 /* ---- text labels inside tiles ---- */
 .t-eyebrow {
@@ -370,8 +380,8 @@ model-viewer[loaded] .mv-progress-bar { display: none; }
   :root { --tile-h: clamp(120px, 30vw, 170px); }
   .tilegrid { grid-template-columns: repeat(2, 1fr); }
   .tile-text-wide, .tile-quote-wide { grid-column: span 2; }
-  .tile-title span { font-size: clamp(24px, 8vw, 38px); }
-  .tile-title-mid span { font-size: clamp(19px, 6.2vw, 30px); }
+  .tile-title span { font-size: clamp(20px, 6.5vw, 32px); }
+  .tile-title-mid span { font-size: clamp(16px, 5vw, 25px); }
 }
 
 @media (max-width: 460px) {

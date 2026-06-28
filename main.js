@@ -67,8 +67,8 @@ function initTileTouch() {
   const tiles = document.querySelectorAll('.tile');
 
   tiles.forEach((tile) => {
-    const hasBack = tile.querySelector('.tile-back');
-    if (!hasBack) return; // tiles without a back layer don't need toggling
+    const emptyFront = tile.querySelector('.tile-front.tile-front-empty');
+    if (!emptyFront) return; // tiles that already show content never toggle
 
     tile.addEventListener('click', (e) => {
       const isInteractive = e.target.closest('a, button');
@@ -76,9 +76,6 @@ function initTileTouch() {
       // a real link/button inside an already-open tile: let it work,
       // don't toggle the tile state at all.
       if (isInteractive && tile.classList.contains('is-open')) return;
-
-      // gallery image tiles open the lightbox via their own handler
-      if (tile.classList.contains('tile-img')) return;
 
       // any other tap (including a tap that happens to land on a
       // link before the tile is open) just opens/closes the tile

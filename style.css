@@ -377,31 +377,30 @@ model-viewer[loaded] .mv-progress-bar { display: none; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 760px) {
-  :root { --tile-h: clamp(120px, 30vw, 170px); }
+  :root { --tile-h: clamp(160px, 42vw, 230px); }
   .tilegrid { grid-template-columns: repeat(2, 1fr); }
   .tile-text-wide, .tile-quote-wide { grid-column: span 2; }
   .tile-title span { font-size: clamp(20px, 6.5vw, 32px); }
   .tile-title-mid span { font-size: clamp(16px, 5vw, 25px); }
 
-  /* Plain text tiles (data-type="text", not already -wide) get the
-     full row width on mobile. A single narrow column is fine for a
-     short label, but real paragraphs need the space — otherwise the
-     fixed tile height clips long copy or pushes it past the edge. */
-  .tile[data-type="text"] {
-    grid-column: 1 / -1;
-    height: auto;
-    min-height: var(--tile-h);
+  /* Plain text tiles keep their single-column width (changing
+     grid-column here would shove sibling tiles into the wrong
+     row via auto-flow). Instead: shrink the type, tighten
+     line-height, and reduce the padding so a full paragraph
+     reliably fits inside the taller mobile tile height above. */
+  .tile[data-type="text"] .tile-front {
+    padding: 10px 12px;
   }
-  .tile[data-type="text"] .tile-front,
-  .tile[data-type="text"] .tile-back {
-    position: relative;
-    inset: auto;
-    padding: 18px clamp(14px, 4vw, 26px);
+  .tile[data-type="text"] .t-body {
+    font-size: 11px;
+    line-height: 1.38;
   }
 }
 
 @media (max-width: 460px) {
-  .t-body, .t-lead { font-size: 12.5px; }
+  :root { --tile-h: clamp(190px, 52vw, 260px); }
+  .tile[data-type="text"] .t-body { font-size: 10.5px; line-height: 1.36; }
+  .t-lead { font-size: 12.5px; }
 }
 
 @media (min-width: 2000px) {

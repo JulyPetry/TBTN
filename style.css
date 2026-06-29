@@ -4,8 +4,8 @@
    Viewport (keine Stagnation auf großen Screens).
    ============================================================ */
 :root {
-  --red:       #D90000;
-  --red-deep:  #860000;
+  --red:       #B8110F;
+  --red-deep:  #720A09;
   --black:     #0E0D0C;
   --paper:     #FBFBF9;   /* kühles, fast reines Weiß statt Beige */
   --paper-2:   #FBFBF9;   /* vereinheitlicht — identisch zu --paper, kein Tonunterschied mehr */

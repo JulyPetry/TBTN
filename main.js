@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMaskViewer('1');
   initMaskViewer('2');
   initMaskViewer('3');
+  initAsh();
 });
 
 /* ---------------------------------------------------------
@@ -219,4 +220,117 @@ function initMaskViewer(n) {
   if (arHint && isIOS) {
     arHint.textContent = 'Auf dem iPhone öffnet der AR-Button die native AR-Vorschau (Quick Look). Screenshot über die Hardware-Tasten.';
   }
+}
+
+/* ---------------------------------------------------------
+   Ash particle system.
+   Small dark flakes drift slowly across the full viewport.
+   On desktop, the mouse repels them gently — like ash
+   caught in a breeze. On touch devices they drift on their
+   own without interaction.
+--------------------------------------------------------- */
+function initAsh() {
+  const canvas = document.getElementById('ashCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const COUNT = 55;
+  const REPEL_RADIUS = 100;
+  const REPEL_FORCE  = 0.28;
+  const DAMPING      = 0.92;
+
+  let W = window.innerWidth;
+  let H = window.innerHeight;
+  let mouse = { x: -999, y: -999 };
+
+  canvas.width  = W;
+  canvas.height = H;
+
+  window.addEventListener('resize', () => {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width  = W;
+    canvas.height = H;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  // Particle factory — random shape, size, drift speed, rotation
+  function makeParticle() {
+    const size = 1.5 + Math.random() * 3.5;
+    return {
+      x:   Math.random() * W,
+      y:   Math.random() * H,
+      vx:  (Math.random() - 0.5) * 0.25,
+      vy:  0.08 + Math.random() * 0.22,   // mostly drifting downward
+      size,
+      // irregular polygon points (2–4 sides offset from circle)
+      sides: 3 + Math.floor(Math.random() * 2),
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.012,
+      // slightly varied dark greys, occasionally a warm near-black
+      alpha: 0.18 + Math.random() * 0.28,
+      color: Math.random() < 0.15
+        ? `rgba(${100 + Math.floor(Math.random()*40)},${20+Math.floor(Math.random()*20)},${10+Math.floor(Math.random()*10)},`
+        : `rgba(${30 + Math.floor(Math.random()*40)},${28+Math.floor(Math.random()*20)},${25+Math.floor(Math.random()*15)},`,
+    };
+  }
+
+  const particles = Array.from({ length: COUNT }, makeParticle);
+
+  function drawParticle(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+    ctx.beginPath();
+    for (let i = 0; i < p.sides; i++) {
+      const angle = (i / p.sides) * Math.PI * 2;
+      const r = p.size * (0.7 + 0.3 * Math.sin(angle * 1.7));
+      const px = Math.cos(angle) * r;
+      const py = Math.sin(angle) * r;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = p.color + p.alpha + ')';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (const p of particles) {
+      // mouse repulsion
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < REPEL_RADIUS && dist > 0) {
+        const force = (1 - dist / REPEL_RADIUS) * REPEL_FORCE;
+        p.vx += (dx / dist) * force;
+        p.vy += (dy / dist) * force;
+      }
+
+      // gentle damping so they don't fly off forever
+      p.vx *= DAMPING;
+      p.vy = p.vy * DAMPING + (1 - DAMPING) * (0.12 + p.size * 0.04);
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotSpeed;
+
+      // wrap around edges with a small margin
+      if (p.y > H + 12) { p.y = -12; p.x = Math.random() * W; }
+      if (p.x < -12)    p.x = W + 12;
+      if (p.x > W + 12) p.x = -12;
+
+      drawParticle(p);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  tick();
 }

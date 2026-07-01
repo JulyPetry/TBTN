@@ -260,22 +260,22 @@ function initAsh() {
 
   // Particle factory — random shape, size, drift speed, rotation
   function makeParticle() {
-    const size = 1.5 + Math.random() * 3.5;
+    const size = 2.5 + Math.random() * 4.5;
     return {
       x:   Math.random() * W,
       y:   Math.random() * H,
       vx:  (Math.random() - 0.5) * 0.25,
-      vy:  0.08 + Math.random() * 0.22,   // mostly drifting downward
+      vy:  0.08 + Math.random() * 0.22,
       size,
-      // irregular polygon points (2–4 sides offset from circle)
       sides: 3 + Math.floor(Math.random() * 2),
       rotation: Math.random() * Math.PI * 2,
       rotSpeed: (Math.random() - 0.5) * 0.012,
-      // slightly varied dark greys, occasionally a warm near-black
-      alpha: 0.18 + Math.random() * 0.28,
-      color: Math.random() < 0.15
-        ? `rgba(${100 + Math.floor(Math.random()*40)},${20+Math.floor(Math.random()*20)},${10+Math.floor(Math.random()*10)},`
-        : `rgba(${30 + Math.floor(Math.random()*40)},${28+Math.floor(Math.random()*20)},${25+Math.floor(Math.random()*15)},`,
+      // more opaque — raised from 0.18–0.46 to 0.38–0.70
+      alpha: 0.38 + Math.random() * 0.32,
+      // darker base colors so they read clearly against light backgrounds
+      color: Math.random() < 0.2
+        ? `rgba(${120 + Math.floor(Math.random()*30)},${15+Math.floor(Math.random()*15)},${8+Math.floor(Math.random()*10)},`
+        : `rgba(${18 + Math.floor(Math.random()*30)},${16+Math.floor(Math.random()*18)},${14+Math.floor(Math.random()*14)},`,
     };
   }
 

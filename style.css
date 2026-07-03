@@ -229,13 +229,7 @@ main { display: block; }
   z-index: 1;
 }
 
-/* hover/tap reveal only applies to EMPTY front tiles.
-   Tiles that already show content (text, quotes, banners,
-   images) must stay visible on hover — only the truly empty
-   color tiles act as "reveal on interaction" surfaces.
-   pointer-events:none is the key fix for buttons in the back
-   layer — without it, the (invisible but still present) front
-   layer keeps intercepting clicks. */
+/* hover/tap reveal only applies to EMPTY front tiles. */
 @media (hover: hover) and (pointer: fine) {
   .tile:hover .tile-front.tile-front-empty {
     transform: translateY(-12%);

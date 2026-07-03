@@ -294,9 +294,8 @@ function initAsh() {
       i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
     }
     ctx.closePath();
-    ctx.strokeStyle = p.color + p.alpha + ')';
-    ctx.lineWidth = 0.9;
-    ctx.stroke();
+    ctx.fillStyle = p.color + p.alpha + ')';
+    ctx.fill();
     ctx.restore();
   }
 

@@ -195,8 +195,8 @@ main { display: block; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: var(--tile-h);
-  gap: 1px;
-  background: var(--black);
+  gap: 0;
+  background: transparent;
   width: 100%;
 }
 
@@ -219,7 +219,7 @@ main { display: block; }
 }
 
 .tile-front {
-  background: var(--paper);
+  background: rgba(251,251,249, 0.82);
   z-index: 2;
   transition: transform .5s var(--ease), opacity .35s var(--ease);
 }
@@ -251,11 +251,11 @@ main { display: block; }
 
 /* ---- color tiles ---- */
 .tile[data-color="red"]        { background: var(--red); }
-.tile[data-color="red"] .tile-front { background: var(--red); }
+.tile[data-color="red"] .tile-front { background: rgba(184,17,15, 0.82); }
 .tile[data-color="black"]      { background: var(--black); }
-.tile[data-color="black"] .tile-front { background: var(--black); }
+.tile[data-color="black"] .tile-front { background: rgba(14,13,12, 0.82); }
 .tile[data-color="paper-dark"] { background: var(--paper-2); }
-.tile[data-color="paper-dark"] .tile-front { background: var(--paper-2); }
+.tile[data-color="paper-dark"] .tile-front { background: rgba(251,251,249, 0.82); }
 
 .tile[data-color="red"] .tile-back,
 .tile[data-color="black"] .tile-back {

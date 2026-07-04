@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTileTouch();
   initLightbox();
   initMaskViewer('1');
-  initMaskViewer('2');
-  initMaskViewer('3');
   initAsh();
 });
 
@@ -234,14 +232,22 @@ function initAsh() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const COUNT = 55;
-  const REPEL_RADIUS = 100;
-  const REPEL_FORCE  = 0.28;
-  const DAMPING      = 0.92;
+  const COUNT        = 48;
+  const REPEL_RADIUS = 110;
+  const REPEL_FORCE  = 0.3;
+  const DAMPING      = 0.91;
+  const FADE_ZONE    = 80; // px above intro bottom where particles fade to 0
 
   let W = window.innerWidth;
   let H = window.innerHeight;
-  let mouse = { x: -999, y: -999 };
+  let mouse = { x: -9999, y: -9999 };
+  let introBottom = getIntroBottom();
+
+  function getIntroBottom() {
+    const intro = document.querySelector('.intro-section');
+    if (!intro) return H;
+    return intro.getBoundingClientRect().bottom + window.scrollY;
+  }
 
   canvas.width  = W;
   canvas.height = H;
@@ -251,62 +257,66 @@ function initAsh() {
     H = window.innerHeight;
     canvas.width  = W;
     canvas.height = H;
+    introBottom = getIntroBottom();
   });
+
+  window.addEventListener('scroll', () => {
+    introBottom = getIntroBottom();
+  }, { passive: true });
 
   window.addEventListener('mousemove', (e) => {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
 
-  // Particle factory — random shape, size, drift speed, rotation
+  // Sharp rectangular particles — width & height vary slightly for organic feel
   function makeParticle() {
-    const size = 2.5 + Math.random() * 4.5;
+    const size = 3 + Math.random() * 5;
     return {
-      x:   Math.random() * W,
-      y:   Math.random() * H,
-      vx:  (Math.random() - 0.5) * 0.25,
-      vy:  0.08 + Math.random() * 0.22,
-      size,
-      sides: 3 + Math.floor(Math.random() * 2),
+      x:        Math.random() * W,
+      y:        Math.random() * introBottom,
+      vx:       (Math.random() - 0.5) * 0.22,
+      vy:       0.10 + Math.random() * 0.20,
+      w:        size,
+      h:        size * (0.5 + Math.random() * 0.8), // slightly non-square
       rotation: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.012,
-      // more opaque — raised from 0.18–0.46 to 0.38–0.70
-      alpha: 0.38 + Math.random() * 0.32,
-      // darker base colors so they read clearly against light backgrounds
-      color: Math.random() < 0.2
-        ? `rgba(${120 + Math.floor(Math.random()*30)},${15+Math.floor(Math.random()*15)},${8+Math.floor(Math.random()*10)},`
-        : `rgba(${18 + Math.floor(Math.random()*30)},${16+Math.floor(Math.random()*18)},${14+Math.floor(Math.random()*14)},`,
+      rotSpeed: (Math.random() - 0.5) * 0.010,
     };
   }
 
   const particles = Array.from({ length: COUNT }, makeParticle);
 
-  function drawParticle(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rotation);
-    ctx.beginPath();
-    for (let i = 0; i < p.sides; i++) {
-      const angle = (i / p.sides) * Math.PI * 2;
-      const r = p.size * (0.7 + 0.3 * Math.sin(angle * 1.7));
-      const px = Math.cos(angle) * r;
-      const py = Math.sin(angle) * r;
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  // Single dark charcoal — full opacity, drawn per-particle with alpha only for fade-out
+  const DARK = 'rgb(38, 36, 34)';
+
+  function drawParticle(p, scrollY) {
+    const viewY = p.y - scrollY;
+
+    // Alpha = 1 fully in intro, fades to 0 approaching introBottom
+    let alpha = 1;
+    if (p.y > introBottom - FADE_ZONE) {
+      alpha = Math.max(0, (introBottom - p.y) / FADE_ZONE);
     }
-    ctx.closePath();
-    ctx.strokeStyle = p.color + p.alpha + ')';
-    ctx.lineWidth = 0.9;
-    ctx.stroke();
+    if (alpha <= 0) return;
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(p.x, viewY);
+    ctx.rotate(p.rotation);
+    ctx.fillStyle = DARK;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
     ctx.restore();
   }
 
   function tick() {
     ctx.clearRect(0, 0, W, H);
+    const scrollY = window.scrollY;
 
     for (const p of particles) {
-      // mouse repulsion
+      // mouse repulsion in viewport-space
+      const viewY = p.y - scrollY;
       const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
+      const dy = viewY - mouse.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < REPEL_RADIUS && dist > 0) {
         const force = (1 - dist / REPEL_RADIUS) * REPEL_FORCE;
@@ -314,20 +324,23 @@ function initAsh() {
         p.vy += (dy / dist) * force;
       }
 
-      // gentle damping so they don't fly off forever
       p.vx *= DAMPING;
-      p.vy = p.vy * DAMPING + (1 - DAMPING) * (0.12 + p.size * 0.04);
-
-      p.x += p.vx;
-      p.y += p.vy;
+      p.vy  = p.vy * DAMPING + (1 - DAMPING) * (0.14 + p.w * 0.03);
+      p.x  += p.vx;
+      p.y  += p.vy;
       p.rotation += p.rotSpeed;
 
-      // wrap around edges with a small margin
-      if (p.y > H + 12) { p.y = -12; p.x = Math.random() * W; }
+      // wrap horizontally
       if (p.x < -12)    p.x = W + 12;
       if (p.x > W + 12) p.x = -12;
 
-      drawParticle(p);
+      // wrap vertically: when below intro, respawn at top
+      if (p.y > introBottom + 12) {
+        p.y = -12;
+        p.x = Math.random() * W;
+      }
+
+      drawParticle(p, scrollY);
     }
 
     requestAnimationFrame(tick);

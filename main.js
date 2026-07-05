@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTileTouch();
   initLightbox();
   initMaskViewer('1');
-  initAsh();
 });
 
 /* ---------------------------------------------------------
@@ -220,14 +219,7 @@ function initMaskViewer(n) {
   }
 }
 
-/* ---------------------------------------------------------
-   Ash particle system.
-   Small dark flakes drift slowly across the full viewport.
-   On desktop, the mouse repels them gently — like ash
-   caught in a breeze. On touch devices they drift on their
-   own without interaction.
---------------------------------------------------------- */
-function initAsh() {
+function initAsh_DISABLED() {
   const canvas = document.getElementById('ashCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
